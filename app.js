@@ -7,6 +7,7 @@ const path = require ("path")
 const admin = require('./routes/admin')
 const session = require ('express-session')
 const flash = require ('connect-flash')
+   
 
 
 // moogose
@@ -19,6 +20,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/blogapp").then(()=>{
 // tamplate engine 
 app.engine('handlebars', handlebars.engine({defaultlayout: 'main'}))
 app.set('view engine', 'handlebars')
+
+
 
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
@@ -37,7 +40,6 @@ app.use((req,res,next)=>{
    res.locals.error_msg = req.flash('error_msg')
    next()
 })
-
 // rotas config   
 app.get ('/', (req,res)=>{
    res.send('home')
