@@ -25,18 +25,19 @@ router.get('/categorias/edit/:id', (req,res)=>{
     Categoria.findOne({_id:req.params.id}).lean().then((categoria)=>{
         res.render('admin/editcategorias',({categoria: categoria}))
     }).catch((err)=>{
-        req.flash('error_msg', 'Houve um erro ao editar esta categoria')
+        req.flash("error_msg", "Houve um erro ao editar esta categoria")
     })
     
 })
 router.post('/categorias/edit/',(req,res)=>{
-    Categoria.findOne({_id:req.body.id}).lean().then((categoria)=>{
+    Categoria.findOne({_id: req.body.id}).then((categoria)=>{
 
         categoria.nome = req.body.nome
-        categoria.slug = req.body.slug
+        categoria.slug = req.body.slug 
+        console.log(categoria)
 
         categoria.save().then(()=>{
-            req.flash('Categoria editada com sucesso')
+            req.flash("success_msg","Categoria editada com sucesso")
             res.redirect('/admin/categorias')
         }).catch((err)=>{
            
@@ -47,6 +48,7 @@ router.post('/categorias/edit/',(req,res)=>{
     }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao editar a categoria")
         res.redirect('/admin/categorias')
+       
     })
 
 })
