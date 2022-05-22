@@ -25,7 +25,7 @@ router.get('/categorias/edit/:id', (req,res)=>{
     Categoria.findOne({_id:req.params.id}).lean().then((categoria)=>{
         res.render('admin/editcategorias',({categoria: categoria}))
     }).catch((err)=>{
-        req.flash("error_msg", "Houve um erro ao editar esta categoria")
+        req.flash("error_msg", "Houve um erro ao permitir edição desta categoria")
     })
     
 })
@@ -34,14 +34,13 @@ router.post('/categorias/edit/',(req,res)=>{
 
         categoria.nome = req.body.nome
         categoria.slug = req.body.slug 
-        console.log(categoria)
-
+        
         categoria.save().then(()=>{
-            req.flash("success_msg","Categoria editada com sucesso")
+            req.flash("success_msg", "Categoria editada com sucesso") // não esou conseguindo renderizar esse .flash
             res.redirect('/admin/categorias')
         }).catch((err)=>{
            
-            req.flash('Erro ao salvar categoria')
+            req.flash('error_msg ','Erro ao salvar categoria')
             res.redirect('/admin/categorias')
         })
 
@@ -50,8 +49,19 @@ router.post('/categorias/edit/',(req,res)=>{
         res.redirect('/admin/categorias')
        
     })
-
 })
+router.post('/categorias/delete', (req,res) =>{
+    Categoria.remove({_id: req.body.id}).then(()=>{
+        req.flash('success_msg','Categoria deletada')
+        res.redirect('/admin/categorias')
+        console.log('FOI')
+    }).catch((err)=>{
+        req.flash('error_msg', 'Erro ao deletar categoria')
+        res.redirect('/admin/categorias')
+        console.log('Nao foi ' +err)
+    })
+})
+
 // limitandoi possibilidades do usuário em criar nomes e slugs com me
 router.post('/categorias/nova', (req,res)=>{
 

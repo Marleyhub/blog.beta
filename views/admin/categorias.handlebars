@@ -13,6 +13,10 @@
         <br>
         <small>Data: {{date}}</small><br>
         <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar categoria</button></a>
+        <form action="/admin/categorias/delete" method="post">
+            <input type="hidden" name="id" id="{{_id}}">
+           <button type="subimit" class="btn btn-danger mt-2">Deletar</button>
+        </form>
     </div>
 </div>
 
