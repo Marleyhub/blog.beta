@@ -5,6 +5,7 @@ require ('../models/Categoria')
 // referenciando um model a uma constante 
 const Categoria = mongoose.model('categorias')
 
+
 // rotas
 router.get('/posts', (req,res)=>{
     res.send('pagina de posts')
@@ -50,6 +51,8 @@ router.post('/categorias/edit/',(req,res)=>{
        
     })
 })
+
+
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg','Categoria deletada')
