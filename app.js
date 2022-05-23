@@ -1,13 +1,14 @@
-const express = require ('express')
-const handlebars = require ('express-handlebars')
-const mongoose = require ('mongoose')
+const   express     = require ('express'),
+        handlebars  = require ('express-handlebars'),
+        mongoose    = require ('mongoose'),
 //const bodyparser = require ('body-parser')
-const app = express()
-const path = require ("path")
-const admin = require('./routes/admin')
-const session = require ('express-session')
-const flash = require ('connect-flash')
+        path        = require ("path"),
+        admin       = require('./routes/admin'),
+        session     = require ('express-session'),
+        flash       = require ('connect-flash');
    
+const   app = express(),
+
 
 
 // moogose
