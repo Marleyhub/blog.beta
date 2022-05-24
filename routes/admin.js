@@ -1,14 +1,14 @@
 const express = require ('express')
 const router = express.Router()
 const mongoose = require ('mongoose')
+//models
 require ('../models/Categoria')
-// referenciando um model a uma constante 
 const Categoria = mongoose.model('categorias')
-//const Postagem = mongoose.model('postagens')
+require('../models/Postagem')
+const Postagem = mongoose.model('postagens')
 
 
 // rotas
-
 router.get('/posts', (req,res)=>{
     res.send('pagina de posts')
 })
@@ -54,7 +54,6 @@ router.post('/categorias/edit/',(req,res)=>{
     })
 })
 
-
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg','Categoria deletada')
@@ -97,19 +96,37 @@ new Categoria(novaCategoria).save().then(()=>{
 
 })
 router.get('/postagem', (req,res)=>{
-    res.render('admin/postagem')
+    res.render('admin/postagens')
 })
 router.get('/postagem/add',(req,res) =>{
-    res.render('admin/addpostagens')
-})
-router.post('postagem/add/:id',(req,res)=>{
-    Postagem.save({_id: req.body.id}).then(()=> {
-        req.flash("Postagem salva com sucesso")
-        res.redirect('admin/postagem')
-    }).catch((err)=>{
-        req.flash('Erro ao salvar postagem')
-        res.redirect('admin/postagem')
-        
+    Categoria.find().lean().then((categoria)=>{
+    res.render('admin/addpostagens',{categoria: categoria})
+    req.flash('')
     })
+})
+router.post('/postagem/nova',(req,res)=>{
+   
+    var erros = []
+    if(req.body.categoria = "0"){
+        erros.push({texto: "Categoria invalida, registre uma nova categoria"})
+        
+    }if(erros.length > 0){
+        res.render("admin/postagens",{erros: erros})
+    }else{
+        const novaPostagem ={
+            titulo: req.body.titulo,
+            slug: req.body.titulo,
+            categoria: req.body.categoria,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo
+        }
+        new Postagem(novaPostagem).save().then(()=>{
+            req.flash ('success_msg','categoria salva com sucesso')
+            res.redirect('admin/addpostagens')
+        }).catch((err)=>{
+           console.lo( req.flash('error_msg','Erro ao salvar nova postagem'))
+            res.redirect('admin/addpostagens')
+        })
+    }
 })
 module.exports = router

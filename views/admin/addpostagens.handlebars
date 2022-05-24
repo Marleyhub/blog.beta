@@ -7,12 +7,24 @@
 <h3>Nova postagem:</h3>
 <div class="card">
     <div class="card-body">
-<form action="/admin/postagem/add" method="post">
-<input type="hidden" name="id" value="{{Postagem._id}}">
+<form action="/admin/postagem/nova" method="post">
 <label for="name">Nome:</label> 
 <input type="text" id="name" name="name" placeholder="Nome da postagem" class="form-control">
 <label for="slug">Slug:</label>
 <input type="text" id="slug" name="slug" placeholder="Slug da postagem" class="form-control">
+<label for="descricao">Descrição:</label>
+<input type="text" id="descricao" name="descricao" placeholder="descricao da postagem" class="form-control">
+<label for="conteudo">Conteúdo:</label>
+<input type="text" id="conteudo" name="conteudo" placeholder="descricao do conteúdo" class="form-control"> 
+<label for="categorias">Categorias:</label>
+    <select name="categorias" class="form-control">7
+        {{#each categoria}}
+       <option value="{{_id}}">{{nome}}</option>></option>
+        {{else}}
+         <option value="0">Nenhuma categoria registrada:</option>
+        {{/each }}
+    </select>
+
 <br>
 <button type="submit" class="btn btn-success">Criar postagem</button>  
 </form>
