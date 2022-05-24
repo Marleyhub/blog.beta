@@ -17,4 +17,4 @@ date: {
     default: Date.now()
 }
 })      
-mongoose.model("categorias", Categoria)
+mongoose.model("categorias", Categoria) 

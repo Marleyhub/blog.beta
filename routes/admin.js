@@ -4,9 +4,11 @@ const mongoose = require ('mongoose')
 require ('../models/Categoria')
 // referenciando um model a uma constante 
 const Categoria = mongoose.model('categorias')
+//const Postagem = mongoose.model('postagens')
 
 
 // rotas
+
 router.get('/posts', (req,res)=>{
     res.send('pagina de posts')
 })
@@ -83,6 +85,7 @@ router.post('/categorias/nova', (req,res)=>{
         nome: req.body.name,
         slug: req.body.slug
 }
+
 new Categoria(novaCategoria).save().then(()=>{
     req.flash('success_msg','Categoria criada com sucesso')
     res.redirect("/admin/categorias")
@@ -91,5 +94,22 @@ new Categoria(novaCategoria).save().then(()=>{
     res.redirect("/admin")
     })
 }
+
+})
+router.get('/postagem', (req,res)=>{
+    res.render('admin/postagem')
+})
+router.get('/postagem/add',(req,res) =>{
+    res.render('admin/addpostagens')
+})
+router.post('postagem/add/:id',(req,res)=>{
+    Postagem.save({_id: req.body.id}).then(()=> {
+        req.flash("Postagem salva com sucesso")
+        res.redirect('admin/postagem')
+    }).catch((err)=>{
+        req.flash('Erro ao salvar postagem')
+        res.redirect('admin/postagem')
+        
+    })
 })
 module.exports = router
