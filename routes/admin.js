@@ -105,9 +105,8 @@ router.get('/postagem', (req,res)=>{
     res.render('admin/postagens')
 })
 router.get('/postagem/add',(req,res) =>{
-    Postagem.find().lean().then((postagens)=>{
-    res.render('admin/addpostagens',{postagens: postagens})
-    req.flash(' ')
+    Categoria.find().lean().then((categoria)=>{
+    res.render('admin/addpostagens',{categoria: categoria}) 
     })
 })
 router.post('/postagem/nova',(req,res)=>{
