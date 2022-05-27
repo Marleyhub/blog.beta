@@ -96,12 +96,18 @@ new Categoria(novaCategoria).save().then(()=>{
 
 })
 router.get('/postagem', (req,res)=>{
+    Postagem.find().populate("categorias").lean().sort({desc:"desc"}).then((postagens)=>{
+        res.render('admin/postagens', {poostagens: postagens})
+    }).catch((err)=>{
+        req.flash('Erro ao listar categorias')
+        res.redirect('admin/postagens')
+    })
     res.render('admin/postagens')
 })
 router.get('/postagem/add',(req,res) =>{
-    Categoria.find().lean().then((categoria)=>{
-    res.render('admin/addpostagens',{categoria: categoria})
-    req.flash('')
+    Postagem.find().lean().then((postagens)=>{
+    res.render('admin/addpostagens',{postagens: postagens})
+    req.flash(' ')
     })
 })
 router.post('/postagem/nova',(req,res)=>{
