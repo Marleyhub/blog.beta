@@ -31,6 +31,7 @@ router.get('/categorias/edit/:id', (req,res)=>{
         req.flash("error_msg", "Houve um erro ao permitir edição desta categoria")
     })
 })
+//editando categoria
 router.post('/categorias/edit/',(req,res)=>{
     Categoria.findOne({_id: req.body.id}).then((categoria)=>{
 
@@ -52,6 +53,7 @@ router.post('/categorias/edit/',(req,res)=>{
        
     })
 })
+//deletando categoria
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg','Categoria deletada')
@@ -91,14 +93,16 @@ router.post('/categorias/nova', (req,res)=>{
     })
 }
 })
+//listando postagens
 router.get('/postagem', (req,res)=>{
-    Postagem.find().populate("categorias").lean().sort({desc:"desc"}).then((postagens)=>{
+    Postagem.find().populate("categoria").sort({date:"desc"}).lean().then((postagens)=>{
         res.render('admin/postagens', {postagens: postagens})
     }).catch((err)=>{
         req.flash('Erro ao listar categorias')
-        res.redirect('admin/postagens')
+        res.redirect('/')
+        console.log(err)
     })
-    //res.render('admin/postagens')
+   
 })
 // listando categorias dentro da view addpostagens.handlebars
 router.get('/postagem/add',(req,res) =>{
@@ -129,11 +133,10 @@ router.post('/postagem/nova',(req,res)=>{
             new Postagem(novaPostagem).save().then(()=>{
             req.flash ('success_msg','categoria salva com sucesso')
             res.render('admin/postagens')
-            console.log('foi' +novaPostagem)
         }).catch((err)=>{
-           req.flash('error_msg', 'houve um erro durante o salvamento da posatgem')
+            req.flash('error_msg', 'houve um erro durante o salvamento da posatgem')
             res.render('admin/postagens')
-            console.log(novaPostagem)
+            
         })
     }
 })
