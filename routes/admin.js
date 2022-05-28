@@ -10,17 +10,17 @@ const Postagem = mongoose.model('postagens')
 
 // rotas
 router.get('/posts', (req,res)=>{
-    res.send('pagina de posts')
+    res.send('pagina de posts')  
 })
 router.get('/categorias', (req,res)=>{
     Categoria.find().sort({date:'desc'}).lean().then((categorias)=>{
        res.render('admin/categorias',{categorias: categorias})
     })
-   // res.render('admin/categorias')
 })
 router.get('/', (req,res)=>{
    res.render("admin/index") 
 })
+// rotas/categorias
 router.get('/categorias/add', (req,res)=>{
     res.render("admin/addcategorias")    
 })
@@ -30,7 +30,6 @@ router.get('/categorias/edit/:id', (req,res)=>{
     }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao permitir edição desta categoria")
     })
-    
 })
 router.post('/categorias/edit/',(req,res)=>{
     Categoria.findOne({_id: req.body.id}).then((categoria)=>{
@@ -53,7 +52,6 @@ router.post('/categorias/edit/',(req,res)=>{
        
     })
 })
-
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg','Categoria deletada')
@@ -65,7 +63,6 @@ router.post('/categorias/delete', (req,res) =>{
         console.log('Nao foi ' +err)
     })
 })
-
 // limitandoi possibilidades do usuário em criar nomes e slugs com me
 router.post('/categorias/nova', (req,res)=>{
 
@@ -85,7 +82,7 @@ router.post('/categorias/nova', (req,res)=>{
         slug: req.body.slug
 }
 
-new Categoria(novaCategoria).save().then(()=>{
+    new Categoria(novaCategoria).save().then(()=>{
     req.flash('success_msg','Categoria criada com sucesso')
     res.redirect("/admin/categorias")
 }).catch((err)=>{
@@ -93,44 +90,49 @@ new Categoria(novaCategoria).save().then(()=>{
     res.redirect("/admin")
     })
 }
-
 })
 router.get('/postagem', (req,res)=>{
     Postagem.find().populate("categorias").lean().sort({desc:"desc"}).then((postagens)=>{
-        res.render('admin/postagens', {poostagens: postagens})
+        res.render('admin/postagens', {postagens: postagens})
     }).catch((err)=>{
         req.flash('Erro ao listar categorias')
         res.redirect('admin/postagens')
     })
-    res.render('admin/postagens')
+    //res.render('admin/postagens')
 })
+// listando categorias dentro da view addpostagens.handlebars
 router.get('/postagem/add',(req,res) =>{
     Categoria.find().lean().then((categoria)=>{
     res.render('admin/addpostagens',{categoria: categoria}) 
-    })
+    }).catch((err)=>{
+        req.flash('error_msg', 'Erro ao listar categorias')
+        res.redirect('admin')   
+    })  
 })
+//salvando postagem
 router.post('/postagem/nova',(req,res)=>{
-   
     var erros = []
-    if(req.body.categoria = "0"){
+    if(req.body.categoria == "0"){
         erros.push({texto: "Categoria invalida, registre uma nova categoria"})
         
     }if(erros.length > 0){
-        res.render("admin/postagens",{erros: erros})
+        res.render("admin/addpostagens",{erros: erros})
     }else{
         const novaPostagem ={
             titulo: req.body.titulo,
-            slug: req.body.titulo,
+            slug: req.body.slug,
             categoria: req.body.categoria,
             descricao: req.body.descricao,
             conteudo: req.body.conteudo
         }
-        new Postagem(novaPostagem).save().then(()=>{
+            new Postagem(novaPostagem).save().then(()=>{
             req.flash ('success_msg','categoria salva com sucesso')
-            res.redirect('admin/addpostagens')
+            res.render('admin/postagens')
+            console.log('foi' +novaPostagem)
         }).catch((err)=>{
-           console.lo( req.flash('error_msg','Erro ao salvar nova postagem'))
-            res.redirect('admin/addpostagens')
+           req.flash('error_msg', 'houve um erro durante o salvamento da posatgem')
+            res.render('admin/postagens')
+            console.log(novaPostagem)
         })
     }
 })

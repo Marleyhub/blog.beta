@@ -11,7 +11,7 @@ const Postagem = new Schema({
         type: String,
         required: true
     },
-    descrição: {
+    descricao: {
         type: String,
         required: true
     },
@@ -31,4 +31,4 @@ const Postagem = new Schema({
     }
 })
 
-mongoose.model('postagens', Postagem)
+mongoose.model("postagens", Postagem)
