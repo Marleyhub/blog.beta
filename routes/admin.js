@@ -124,6 +124,7 @@ router.post('/postagem/nova',(req,res)=>{
             categoria: req.body.categoria,
             descricao: req.body.descricao,
             conteudo: req.body.conteudo
+            // os nomes estavam incompatíveis com o fomulário criado em "addpostagens" sendo assim os dados não eram salvos no banco de dados pois o que estavam com os nomes incompatíveis simplesmente não salvavam e todos os itens do objeto Postagem são obrigatórios pelo "required"
         }
             new Postagem(novaPostagem).save().then(()=>{
             req.flash ('success_msg','categoria salva com sucesso')
