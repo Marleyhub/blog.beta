@@ -12,10 +12,10 @@
         <small>Slug: <strong>{{slug}}</strong></small>
         <br>
         <small>Data: {{date}}</small><br>
-        <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar categoria</button></a>
+        <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar</button></a> <br>
+        <button type="subimit" class="btn btn-danger mt-2">Deletar</button>
         <form action="/admin/categorias/delete" method="post">
             <input type="hidden" name="id" value="{{_id}}">
-           <button type="subimit" class="btn btn-danger mt-2">Deletar</button>
         </form>
     </div>
 </div>
