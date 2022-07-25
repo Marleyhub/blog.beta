@@ -12,18 +12,22 @@ const Postagem = mongoose.model('postagens')
 router.get('/posts', (req,res)=>{
     res.send('pagina de posts')  
 })
+// listanfo categorias 
 router.get('/categorias', (req,res)=>{
     Categoria.find().sort({date:'desc'}).lean().then((categorias)=>{
        res.render('admin/categorias',{categorias: categorias})
     })
 })
+// aparentemente uma rota duplicada
 router.get('/', (req,res)=>{
    res.render("admin/index") 
 })
-// rotas/categorias
+
+//adicionando categoria
 router.get('/categorias/add', (req,res)=>{
     res.render("admin/addcategorias")    
 })
+//botão de edição 
 router.get('/categorias/edit/:id', (req,res)=>{
     Categoria.findOne({_id:req.params.id}).lean().then((categoria)=>{
         res.render('admin/editcategorias',({categoria: categoria}))
@@ -31,6 +35,7 @@ router.get('/categorias/edit/:id', (req,res)=>{
         req.flash("error_msg", "Houve um erro ao permitir edição desta categoria")
     })
 })
+
 //editando categoria
 router.post('/categorias/edit/',(req,res)=>{
     Categoria.findOne({_id: req.body.id}).then((categoria)=>{
@@ -53,6 +58,7 @@ router.post('/categorias/edit/',(req,res)=>{
        
     })
 })
+
 //deletando categoria
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
@@ -65,7 +71,8 @@ router.post('/categorias/delete', (req,res) =>{
         console.log('Nao foi ' +err)
     })
 })
-// limitandoi possibilidades do usuário em criar nomes e slugs com me
+
+// limitando possibilidades do usuário
 router.post('/categorias/nova', (req,res)=>{
 
     var erros = []
@@ -93,17 +100,19 @@ router.post('/categorias/nova', (req,res)=>{
     })
 }
 })
+
 //listando postagens
 router.get('/postagem', (req,res)=>{
     Postagem.find().populate("categoria").sort({date:"desc"}).lean().then((postagens)=>{
         res.render('admin/postagens', {postagens: postagens})
     }).catch((err)=>{
         req.flash('Erro ao listar categorias')
-        res.redirect('/')
+        res.redirect('/') 
         console.log(err)
     })
    
 })
+
 // listando categorias dentro da view addpostagens.handlebars
 router.get('/postagem/add',(req,res) =>{
     Categoria.find().lean().then((categoria)=>{
@@ -113,6 +122,7 @@ router.get('/postagem/add',(req,res) =>{
         res.redirect('admin')   
     })  
 })
+
 //salvando postagem
 router.post('/postagem/nova',(req,res)=>{
     var erros = []
