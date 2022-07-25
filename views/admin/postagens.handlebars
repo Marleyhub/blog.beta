@@ -12,8 +12,8 @@
         <p>{{categoria.nome}}</p>
         <p>{{conteudo}}</p> 
         <a href="/admin/postagem/edit/{{_id}}"><button class="btn btn-success mt-2">Editar</button></a><br>
-        <form action="/admin/postagem/delete" method="post">
-        <button type="submit" class="btn btn-danger mt-2">Deletar</button>>
+        <form action="/admin/postagem/edit" method="post">
+        <button type="submit" class="btn btn-danger mt-2  ">Deletar</button>>
         <input type="hidden" name="id" value="{{_id}}">
         </form>
         

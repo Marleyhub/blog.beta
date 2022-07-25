@@ -1,0 +1,12 @@
+<H3>Editando Postagens:</H3>
+<div class="card">
+    <div class="card-body">
+    <form action="/admin/postagem/edit/" method="post">
+    <input type="hidden" name="id" value="{{postagens._id}}">
+    <label for="titulo">Titulo:</label>
+    <input type="text" id="titulo" name="titulo" placeholder="nome do título" class="form-control" value="{{postagem.titulo}}">
+
+    <button type="submit" class="btn btn success mt-2">salvar</button>
+    </form>
+ </div>
+</div>

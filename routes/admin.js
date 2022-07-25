@@ -148,7 +148,7 @@ router.post('/postagem/nova',(req,res)=>{
     }
 })
 //editando postagem
-router.get('/postagem/edit/', (req,res)=>{
+router.post('/postagem/edit/', (req,res)=>{
     Postagem.findOne({_id: req.body.id}).then((postagem)=>{
         categoria.nome = req.body.nome
         categoria.slug = req.body.slug
@@ -172,7 +172,7 @@ router.post ('/postagem/delete', (req,res) =>{
         req.flash('success_msg', 'Postagem deletada')
         res.redirect('/admin/postagens')
         console.log('foi')
-        console.loh(id)
+        console.log(id)
     }).catch((err) =>{
         req.flash('error_msg', 'Nao foi possivel deletar postagem')
         res.redirect('/admin/postagens')
