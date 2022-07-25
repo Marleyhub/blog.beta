@@ -147,6 +147,26 @@ router.post('/postagem/nova',(req,res)=>{
         })
     }
 })
+//editando postagem
+router.get('/postagem/edit/', (req,res)=>{
+    Postagem.findOne({_id: req.body.id}).then((postagem)=>{
+        categoria.nome = req.body.nome
+        categoria.slug = req.body.slug
+
+        categoria.save().then(()=>{
+            req.flash("success_msg", 'Postagem salva')
+            res.redirect('admin/postagens')
+        }).catch((err)=>{
+            req.flash('Erro ao salvar postagem')
+            res.redirect('success_msg', 'Erro ao salvar categoria')
+        })
+    }).catch((err)=>{
+        req.flash('error_msg','Erro ao editar categoria')
+        res.redirect('admin/postagens')
+    })
+
+})
+// deletando postagem
 router.post ('/postagem/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg', 'Postagem deletada')

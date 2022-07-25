@@ -13,9 +13,7 @@
         <br>
         <small>Data: {{date}}</small><br>
         <!-- bototes -->
-        <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar</button></a> <br>
-        
-        <!-- ações -->
+        <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-2">Editar</button></a> <br>
         <form action="/admin/categorias/delete" method="post">
         <input type="hidden" name="id" value="{{_id}}">
         <button type="subimit" class="btn btn-danger mt-2">Deletar</button>
