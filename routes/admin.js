@@ -147,11 +147,12 @@ router.post('/postagem/nova',(req,res)=>{
         })
     }
 })
-router.post ('/postagens/delete', (req,res) =>{
+router.post ('/postagem/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg', 'Postagem deletada')
         res.redirect('/admin/postagens')
         console.log('foi')
+        console.loh(id)
     }).catch((err) =>{
         req.flash('error_msg', 'Nao foi possivel deletar postagem')
         res.redirect('/admin/postagens')
