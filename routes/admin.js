@@ -1,4 +1,6 @@
 const express = require ('express')
+const req = require('express/lib/request')
+const res = require('express/lib/response')
 const router = express.Router()
 const mongoose = require ('mongoose')
 //models
@@ -58,7 +60,6 @@ router.post('/categorias/edit/',(req,res)=>{
        
     })
 })
-
 //deletando categoria
 router.post('/categorias/delete', (req,res) =>{
     Categoria.remove({_id: req.body.id}).then(()=>{
@@ -71,8 +72,7 @@ router.post('/categorias/delete', (req,res) =>{
         console.log('Nao foi ' +err)
     })
 })
-
-// limitando possibilidades do usuário
+// limitandoi possibilidades do usuário em criar nomes e slugs com me
 router.post('/categorias/nova', (req,res)=>{
 
     var erros = []
@@ -100,9 +100,8 @@ router.post('/categorias/nova', (req,res)=>{
     })
 }
 })
-
 //listando postagens
-router.get('/postagem', (req,res)=>{
+router.get('/postagens', (req,res)=>{
     Postagem.find().populate("categoria").sort({date:"desc"}).lean().then((postagens)=>{
         res.render('admin/postagens', {postagens: postagens})
     }).catch((err)=>{
@@ -112,7 +111,6 @@ router.get('/postagem', (req,res)=>{
     })
    
 })
-
 // listando categorias dentro da view addpostagens.handlebars
 router.get('/postagem/add',(req,res) =>{
     Categoria.find().lean().then((categoria)=>{
@@ -122,7 +120,6 @@ router.get('/postagem/add',(req,res) =>{
         res.redirect('admin')   
     })  
 })
-
 //salvando postagem
 router.post('/postagem/nova',(req,res)=>{
     var erros = []
@@ -150,4 +147,16 @@ router.post('/postagem/nova',(req,res)=>{
         })
     }
 })
+router.post ('/postagens/delete', (req,res) =>{
+    Categoria.remove({_id: req.body.id}).then(()=>{
+        req.flash('success_msg', 'Postagem deletada')
+        res.redirect('/admin/postagens')
+        console.log('foi')
+    }).catch((err) =>{
+        req.flash('error_msg', 'Nao foi possivel deletar postagem')
+        res.redirect('/admin/postagens')
+        console.log('Nao foi')
+    })
+})
+
 module.exports = router
