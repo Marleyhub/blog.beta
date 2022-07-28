@@ -1,7 +1,6 @@
 const express = require ('express')
 const req = require('express/lib/request')
 const res = require('express/lib/response')
-const { compileQueryParser } = require('express/lib/utils')
 const router = express.Router()
 const mongoose = require ('mongoose')
 //models
@@ -26,7 +25,7 @@ router.get('/', (req,res)=>{
    res.render("admin/index") 
 })
 
-//adicionando categoria
+//abrindo view de adição de categoria 
 router.get('/categorias/add', (req,res)=>{
     res.render("admin/addcategorias")    
 })
@@ -50,10 +49,11 @@ router.post('/categorias/edit/',(req,res)=>{
             req.flash("success_msg", "Categoria editada com sucesso") // não esou conseguindo renderizar esse .flash
             res.redirect('/admin/categorias')
         }).catch((err)=>{
+            
             req.flash('error_msg ','Erro ao salvar categoria')
             res.redirect('/admin/categorias')
         })
-        }).catch((err)=>{
+    }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao editar a categoria")
         res.redirect('/admin/categorias')
     })
@@ -72,7 +72,7 @@ router.post('/categorias/delete', (req,res) =>{
     })
 })
 
-//limitandoi possibilidades do usuário em criar nomes e slugs com me
+//adicionando categoria
 router.post('/categorias/nova', (req,res)=>{
 
     var erros = []
@@ -112,7 +112,7 @@ router.get('/postagens', (req,res)=>{
     })
 })
 
-// listando categorias dentro da view addpostagens.handlebars
+//listando categorias dentro da view addpostagens.handlebars
 router.get('/postagem/add',(req,res) =>{
     Categoria.find().lean().then((categoria)=>{
     res.render('admin/addpostagens',{categoria: categoria}) 
@@ -122,7 +122,7 @@ router.get('/postagem/add',(req,res) =>{
     })  
 })
 
-//salvando postagem
+//adcionoando postagem
 router.post('/postagem/nova',(req,res)=>{
     var erros = []
     if(req.body.categoria == "0"){
@@ -141,12 +141,11 @@ router.post('/postagem/nova',(req,res)=>{
         }
             new Postagem(novaPostagem).save().then(()=>{
             req.flash ('success_msg','categoria salva com sucesso')
-            res.render('admin/postagens')
-            console.log ('foi')
+            res.redirect('/admin/postagens')
+            
         }).catch((err)=>{
-            req.flash('error_msg', 'houve um erro durante o salvamento da postasgem')
-            res.render('admin/postagens')
-            console.log('Não foi')
+            req.flash('error_msg', 'houve um erro durante o salvamento da posatgem')
+            res.redirect('/admin/postagens')
             
         })
     }
