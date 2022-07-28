@@ -158,23 +158,27 @@ router.get('/postagem/edit/:id', (req,res)=>{ // a identifição por id vem por 
 
 //editando postagem
 router.post('/postagem/edit/', (req,res)=>{
-    Postagem.findOne({_id: req.body.id}).then((postagens)=>{
+    Postagem.findOne({_id: req.body.id}).then((postagem)=>{
         
-       postagens.titulo = req.body.titulo
-        postagens.slug = req.body.slug
+        postagem.titulo = req.body.titulo,
+        postagem.slug = req.body.slug,
+        postagem.descricao = req.body.descricao,
+        postagem.conteudo = req.body.conteudo,
+        postagem.categoria = req.body.categoria
 
-        postagens.save().then(()=>{
+        postagem.save().then(()=>{
             req.flash("success_msg", 'Postagem salva')
             res.redirect('/admin/postagens')
         }).catch((err)=>{
             req.flash('Erro ao salvar postagem')
-            res.redirect('success_msg', 'Erro ao salvar categoria')
+            res.redirect('/admin/postagens')
             console.log('não foi salvo')
+            console.log(err)
         })
     }).catch((err)=>{
         req.flash('error_msg','Erro ao editar categoria')
         res.redirect('/admin/postagens')
-        console.log('não foi')
+        console.log(err)
     })
     
 })

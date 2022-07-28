@@ -2,15 +2,15 @@
 <div class="card">
     <div class="card-body">
     <form action='/admin/postagem/edit/' method="post">
-    <input type="hidden" name="id" value="{{postagens._id}}">
+    <input type="hidden" name="id" value="{{postagem._id}}">
     <label for="titulo">Titulo:</label>
-    <input type="text" id="titulo" name="titulo" placeholder="nome do título" class="form-control" value="{{postagem.titulo}}">
+    <input type="text" id="titulo" name="titulo" placeholder="nome do título" class="form-control" value="{{postagem.titulo}}" required>
     <label for="slug">Slug:</label>
-    <input type="text" id="slug" name="slug" placeholder="nome da slug" class="form-control" value="{{postagem.slug}}">
+    <input type="text" id="slug" name="slug" placeholder="nome da slug" class="form-control" value="{{postagem.slug}}" required>
     <label for="titulo">Descrição:</label>
-    <input type="text" id="descrição" name="descriçao" placeholder="descrição" class="form-control" value="{{postagem.descricao}}">
+    <input type="text" id="descricao" name="descricao" placeholder="descrição" class="form-control" value="{{postagem.descricao}}"required>
     <label for="conteudo">Conteúdo:</label><br> 
-    <textarea name="conteudo" id="conteudo">{{postagem.conteudo}}</textarea> <br>
+    <textarea name="conteudo" id="conteudo" >{{postagem.conteudo}}</textarea> <br>
     <label for="categoria">Categoria:</label><br>
     <select name="categoria" class="custom-select">
         {{#each categorias}}
@@ -19,7 +19,6 @@
         <option value="0">Nenhuma categoria registrada!</option>
         {{/each}}
     </select><br>
-    
     <button type="submit" class="btn btn-success mt-2">Salvar</button>
     </form>
  </div>
