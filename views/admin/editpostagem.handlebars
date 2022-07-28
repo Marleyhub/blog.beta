@@ -5,8 +5,22 @@
     <input type="hidden" name="id" value="{{postagens._id}}">
     <label for="titulo">Titulo:</label>
     <input type="text" id="titulo" name="titulo" placeholder="nome do título" class="form-control" value="{{postagem.titulo}}">
-
-    <button type="submit" class="btn btn success mt-2">salvar</button>
+    <label for="slug">Slug:</label>
+    <input type="text" id="slug" name="slug" placeholder="nome da slug" class="form-control" value="{{postagem.slug}}">
+    <label for="titulo">Descrição:</label>
+    <input type="text" id="descrição" name="descriçao" placeholder="descrição" class="form-control" value="{{postagem.descricao}}">
+    <label for="conteudo">Conteúdo:</label><br> 
+    <textarea name="conteudo" id="conteudo">{{postagem.conteudo}}</textarea> <br>
+    <label for="categoria">Categoria:</label><br>
+    <select name="categoria" class="custom-select">
+        {{#each categorias}}
+        <option value="{{_id}}">{{nome}}></option>
+        {{else}}
+        <option value="0">Nenhuma categoria registrada!</option>
+        {{/each}}
+    </select><br>
+    
+    <button type="submit" class="btn btn-success mt-2">Salvar</button>
     </form>
  </div>
 </div>

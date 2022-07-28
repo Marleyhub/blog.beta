@@ -147,11 +147,14 @@ router.post('/postagem/nova',(req,res)=>{
         })
     }
 })
-router.get('/postagem/edit/:id', (req,res)=>{
- res.render('admin/editpostagem') // colocar este trecho sem a barra no começo faz o sistema entender como um arquivo dentro da view
- 
+//Abrindo a view de edicão de postagens 
+router.get('/postagem/edit/:id', (req,res)=>{ // a identifição por id vem por meio dessa rota
+    Postagem.findOne({_id: req.params.id}).lean().then((postagem)=>{
+     Categoria.find().lean().then((categorias)=>{  
+     res.render('admin/editpostagem',{categorias: categorias, postagem: postagem})// colocar este trecho sem a barra no começo faz o sistema entender como um arquivo dentro da view
+    })
 })
-
+})
 
 //editando postagem
 router.post('/postagem/edit/', (req,res)=>{
