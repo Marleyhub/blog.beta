@@ -147,28 +147,37 @@ router.post('/postagem/nova',(req,res)=>{
         })
     }
 })
+router.get('/postagem/edit/:id', (req,res)=>{
+ res.render('admin/editpostagem') // colocar este trecho sem a barra no começo faz o sistema entender como um arquivo dentro da view
+ 
+})
+
+
 //editando postagem
 router.post('/postagem/edit/', (req,res)=>{
-    Postagem.findOne({_id: req.body.id}).then((postagem)=>{
-        categoria.nome = req.body.nome
-        categoria.slug = req.body.slug
+    Postagem.findOne({_id: req.body.id}).then((postagens)=>{
+        
+       postagens.titulo = req.body.titulo
+        postagens.slug = req.body.slug
 
-        categoria.save().then(()=>{
+        postagens.save().then(()=>{
             req.flash("success_msg", 'Postagem salva')
-            res.redirect('admin/postagens')
+            res.redirect('/admin/postagens')
         }).catch((err)=>{
             req.flash('Erro ao salvar postagem')
             res.redirect('success_msg', 'Erro ao salvar categoria')
+            console.log('não foi salvo')
         })
     }).catch((err)=>{
         req.flash('error_msg','Erro ao editar categoria')
-        res.redirect('admin/postagens')
+        res.redirect('/admin/postagens')
+        console.log('não foi')
     })
-
+    
 })
 // deletando postagem
 router.post ('/postagem/delete', (req,res) =>{
-    Categoria.remove({_id: req.body.id}).then(()=>{
+    Postagem.remove({_id: req.body.id}).then(()=>{
         req.flash('success_msg', 'Postagem deletada')
         res.redirect('/admin/postagens')
         console.log('foi')
