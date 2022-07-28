@@ -1,6 +1,7 @@
 const express = require ('express')
 const req = require('express/lib/request')
 const res = require('express/lib/response')
+const { compileQueryParser } = require('express/lib/utils')
 const router = express.Router()
 const mongoose = require ('mongoose')
 //models
@@ -10,7 +11,7 @@ require('../models/Postagem')
 const Postagem = mongoose.model('postagens')
 
 
-// rotas
+//rotas
 router.get('/posts', (req,res)=>{
     res.send('pagina de posts')  
 })
@@ -49,12 +50,10 @@ router.post('/categorias/edit/',(req,res)=>{
             req.flash("success_msg", "Categoria editada com sucesso") // não esou conseguindo renderizar esse .flash
             res.redirect('/admin/categorias')
         }).catch((err)=>{
-           
             req.flash('error_msg ','Erro ao salvar categoria')
             res.redirect('/admin/categorias')
         })
-
-    }).catch((err)=>{
+        }).catch((err)=>{
         req.flash("error_msg", "Houve um erro ao editar a categoria")
         res.redirect('/admin/categorias')
     })
@@ -111,7 +110,6 @@ router.get('/postagens', (req,res)=>{
         res.redirect('/') 
         console.log(err)
     })
-   
 })
 
 // listando categorias dentro da view addpostagens.handlebars
@@ -144,9 +142,11 @@ router.post('/postagem/nova',(req,res)=>{
             new Postagem(novaPostagem).save().then(()=>{
             req.flash ('success_msg','categoria salva com sucesso')
             res.render('admin/postagens')
+            console.log ('foi')
         }).catch((err)=>{
-            req.flash('error_msg', 'houve um erro durante o salvamento da posatgem')
+            req.flash('error_msg', 'houve um erro durante o salvamento da postasgem')
             res.render('admin/postagens')
+            console.log('Não foi')
             
         })
     }
@@ -166,8 +166,8 @@ router.get('/postagem/edit/:id', (req,res)=>{
 //editando postagem
 router.post('/postagem/edit/', (req,res)=>{
     Postagem.findOne({_id: req.body.id}).then((postagem)=>{
-// nessa parte o sistema usa dados do id e nome do input criado na view:
-       
+
+//nessa parte o sistema usa dados do id e nome do input criado na view:
         postagem.titulo = req.body.titulo,
         postagem.slug = req.body.slug,
         postagem.descricao = req.body.descricao,
