@@ -3,7 +3,7 @@ const req = require('express/lib/request')
 const res = require('express/lib/response')
 const router = express.Router()
 const mongoose = require ('mongoose')
-//models
+//models    
 require ('../models/Categoria')
 const Categoria = mongoose.model('categorias')
 require('../models/Postagem')
@@ -11,24 +11,27 @@ const Postagem = mongoose.model('postagens')
 
 
 //rotas
-router.get('/posts', (req,res)=>{
-    res.send('pagina de posts')  
+router.get('/postes', (req,res)=>{
+    res.render('')  
 })
+
 // listanfo categorias 
 router.get('/categorias', (req,res)=>{
     Categoria.find().sort({date:'desc'}).lean().then((categorias)=>{
        res.render('admin/categorias',{categorias: categorias})
     })
 })
-// aparentemente uma rota duplicada
-router.get('/', (req,res)=>{
-   res.render("admin/index") 
+
+// abrindo home do admin 
+  router.get('/', (req,res)=>{
+  res.render("admin/index") 
 })
 
 //abrindo view de adição de categoria 
 router.get('/categorias/add', (req,res)=>{
     res.render("admin/addcategorias")    
 })
+
 //botão de edição 
 router.get('/categorias/edit/:id', (req,res)=>{
     Categoria.findOne({_id:req.params.id}).lean().then((categoria)=>{
@@ -201,5 +204,6 @@ router.post ('/postagem/delete', (req,res) =>{
         console.log('Nao foi')
     })
 })
+
 
 module.exports = router

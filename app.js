@@ -44,8 +44,9 @@ app.use((req,res,next)=>{
 app.get ('/', (req,res)=>{
    res.send('home')
 })
-app.get('posts', (req,res)=>{
-   res.send('listas de posts')
+//ao chamar arquivos soltos da view não existe a necessidade da barra 
+app.get('/posts', (req,res)=>{
+   res.render('index')
 })
 
 // referenciando a nossa página de rotas
