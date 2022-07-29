@@ -7,6 +7,8 @@ const path = require ("path")
 const admin = require('./routes/admin')
 const session = require ('express-session')
 const flash = require ('connect-flash')
+require('./models/Postagem')
+const Postagem = mongoose.model('postagens')
 
 
 
@@ -20,8 +22,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/blogapp").then(()=>{
 // tamplate engine 
 app.engine('handlebars', handlebars.engine({defaultlayout: 'main'}))
 app.set('view engine', 'handlebars')
-
-
 
 app.use(express.urlencoded({extended:false}))
 app.use(express.json())
@@ -46,7 +46,17 @@ app.get ('/', (req,res)=>{
 })
 //ao chamar arquivos soltos da view não existe a necessidade da barra 
 app.get('/posts', (req,res)=>{
-   res.render('index')
+   Postagem.find().populate("categoria").sort({data: "desc"}).lean().then((postagens)=>{
+      res.render("index",{postagens: postagens})
+   }).catch((err)=>{
+      req.flash('error_msg', 'erro ao carregar postagens')
+      res.redirect('/404')
+      console.log(err)
+   })
+})
+app.get('/404', (req,res) =>{
+   res.send('Error 404')
+   res.end()
 })
 
 // referenciando a nossa página de rotas
