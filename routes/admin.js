@@ -195,7 +195,6 @@ router.post ('/postagem/delete', (req,res) =>{
         req.flash('success_msg', 'Postagem deletada')
         res.redirect('/admin/postagens')
         console.log('foi')
-        console.log(id)
     }).catch((err) =>{
         req.flash('error_msg', 'Nao foi possivel deletar postagem')
         res.redirect('/admin/postagens')
