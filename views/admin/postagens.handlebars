@@ -1,17 +1,18 @@
 <h2>Lista de postagens:</h2>
 <hr>
 <!-- chamando a url criada na paginas de rotas -->
-<a href="/admin/postagem/add"><button class="btn btn-success">Nova postagem</button></a> <!-- sempre iniciar com a "/" se não ele vai entender como uma rota e não como um arquivo-->
+<a href="/admin/postagem/add"><button class="btn btn-success">Nova postagem</button></a><!-- sempre iniciar com a "/" se não ele vai entender como uma rota e não como um arquivo-->
 
  {{#each postagens}}
-<div class="card">
+<div class="card mt-4">
     <div class="card-body">
         <h3>{{titulo}}</h3>  
+        <hr>
         <small>{{data}}</small> 
         <p>{{descricao}}</p> 
         <p>{{categoria.nome}}</p>
         <p>{{conteudo}}</p> 
-        <a href='/admin/postagem/edit/{{_id}}'><button class="btn btn-success mt-2">Editar</button></a><br>
+        <a href='/admin/postagem/edit/{{_id}}'><button class="btn btn-success mt-2">Editar</button></a>
         <form action="/admin/postagem/delete" method="post">
         <button type="submit" class="btn btn-danger mt-2">Deletar</button>
         <input type="hidden" name="id" value="{{_id}}">
