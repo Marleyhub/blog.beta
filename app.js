@@ -7,8 +7,13 @@ const path = require ("path")
 const admin = require('./routes/admin')
 const session = require ('express-session')
 const flash = require ('connect-flash')
+const req = require('express/lib/request')
+const res = require('express/lib/response')
 require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
+require ('./models/Categoria')
+const Categoria = mongoose.model('categorias')
+
 
 
 
@@ -46,6 +51,7 @@ app.get ('/', (req,res)=>{
 })
 //ao chamar arquivos soltos da view não existe a necessidade da barra 
 app.get('/posts', (req,res)=>{
+//ao chamar "postagens" em "/then" é feita referência a declaração feita pra chamar o model referente, lá foi declarado e aqui  
    Postagem.find().populate("categoria").sort({data: "desc"}).lean().then((postagens)=>{
       res.render("index",{postagens: postagens})
    }).catch((err)=>{
@@ -54,6 +60,31 @@ app.get('/posts', (req,res)=>{
       console.log(err)
    })
 })
+
+// pagina de categorias
+app.get('/categorias', (req,res)=>{
+   Categoria.find().sort({date: "desc"}).lean().then((categorias)=>{
+      res.render('categorias/index', {categorias: categorias})
+   }).catch((err)=>{
+      req.flash('error_msg', "Erro ao carregar categorias")
+      res.redirect('/')
+      console.log(err)
+   })
+   
+})
+
+//Direcionando para a descrição de uma categoria específica
+app.get('categorias/:slug',(req,res)=>{
+   Postagem.findOne({slug: req.params.slug}).sort({date:"desc"}).lean().then((categorias)=>{
+      res.render('categorias/posts',{categorias: categorias, postagens: postagens})
+   }).catch((err)=>{
+      res.redirect('/categorias')
+      req.flash('error_msg', "Erro ao carregar categoria")
+      console.log(err)
+   })
+})
+
+//Página de erros
 app.get('/404', (req,res) =>{
    res.send('Error 404')
    res.end()

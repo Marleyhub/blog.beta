@@ -47,7 +47,7 @@ router.post('/categorias/edit/',(req,res)=>{
 
         categoria.nome = req.body.nome
         categoria.slug = req.body.slug 
-        
+            
         categoria.save().then(()=>{
             req.flash("success_msg", "Categoria editada com sucesso") // não esou conseguindo renderizar esse .flash
             res.redirect('/admin/categorias')
