@@ -74,13 +74,21 @@ app.get('/categorias', (req,res)=>{
 })
 
 //Direcionando para a descrição de uma categoria específica
-app.get('categorias/:slug',(req,res)=>{
-   Postagem.findOne({slug: req.params.slug}).sort({date:"desc"}).lean().then((categorias)=>{
-      res.render('categorias/posts',{categorias: categorias, postagens: postagens})
-   }).catch((err)=>{
-      res.redirect('/categorias')
-      req.flash('error_msg', "Erro ao carregar categoria")
-      console.log(err)
+app.get('/categorias/:slug',(req,res)=>{
+   Postagem.findOne({slug: req.params.slug}).lean().then((categoria)=>{
+      if(categoria){
+         Postagem.find({categorias: categorias._id}).lean().then((postagens)=>{
+            res.render('categorias/posts', {categoria: categoria , postagens: postagens})
+         }).catch((err)=>{
+            res.redirect('/')
+            req.flash('error_msg', "Erro ao carregar categoria")
+            console.log(err)
+         })
+      }else{
+         req.flash ('error_msg', "Categoria não existe")
+         res.redirect('/')
+         console.log('deu ruim')
+      }
    })
 })
 
