@@ -1,7 +1,6 @@
 const express = require ('express')
 const handlebars = require ('express-handlebars')
 const mongoose = require ('mongoose')
-//const bodyparser = require ('body-parser')
 const app = express()
 const path = require ("path")
 const admin = require('./routes/admin')
@@ -13,8 +12,7 @@ require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
-
-
+const Port = 3002
 
 
 // moogose
@@ -36,7 +34,7 @@ app.use(session({
    secret: 'cursodenode',
    resave: true,
    saveUninitialized: true
-}))
+}))   
 //flash (apresenta aplicações temporarias)
 app.use(flash())
 // ultilizando variaveis globais em uma middleware
@@ -51,7 +49,7 @@ app.get ('/', (req,res)=>{
 })
 //ao chamar arquivos soltos da view não existe a necessidade da barra 
 app.get('/posts', (req,res)=>{
-//ao chamar "postagens" em "/then" é feita referência a declaração feita pra chamar o model referente, lá foi declarado e aqui  
+//ao chamar "postagens" em "/then" é feita referência a declaração feita pra chamar o model referente, lá foi declarado e aqui solicitado 
    Postagem.find().populate("categoria").sort({data: "desc"}).lean().then((postagens)=>{
       res.render("index",{postagens: postagens})
    }).catch((err)=>{
@@ -103,9 +101,9 @@ app.use('/admin', admin)
 //referenciando local de arquivos estáticos 
 app.use(express.static(path.join(__dirname,"public")))
 
-
-const Port = 3002
+// express http server 
 app.listen (Port,() =>{
    console.log('servidor rodando na porta 3002')
+
 })
 

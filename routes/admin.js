@@ -1,6 +1,6 @@
 const express = require ('express')
-const req = require('express/lib/request')
-const res = require('express/lib/response')
+//const req = require('express/lib/request')
+//const res = require('express/lib/response')
 const router = express.Router()
 const mongoose = require ('mongoose')
 //models    
@@ -15,7 +15,7 @@ router.get('/postes', (req,res)=>{
     res.render('')  
 })
 
-// listanfo categorias 
+// listando categorias 
 router.get('/categorias', (req,res)=>{
     Categoria.find().sort({date:'desc'}).lean().then((categorias)=>{
        res.render('admin/categorias',{categorias: categorias})
