@@ -60,7 +60,7 @@ app.get('/posts', (req,res)=>{
 })
 
 app.get('/log',(req,res)=>{
-   res.send('criando conta')
+   res.render('usuarios/cadastro')
 })
    
 // pagina de categorias
