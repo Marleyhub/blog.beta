@@ -59,6 +59,10 @@ app.get('/posts', (req,res)=>{
    })
 })
 
+app.get('/log',(req,res)=>{
+   res.send('criando conta')
+})
+   
 // pagina de categorias
 app.get('/categorias', (req,res)=>{
    Categoria.find().sort({date: "desc"}).lean().then((categorias)=>{

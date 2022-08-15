@@ -11,7 +11,7 @@ const Postagem = mongoose.model('postagens')
 
 
 //rotas
-router.get('/postes', (req,res)=>{
+router.get('/posts', (req,res)=>{
     res.render('')  
 })
 
