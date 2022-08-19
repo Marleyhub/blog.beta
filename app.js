@@ -3,15 +3,17 @@ const handlebars = require ('express-handlebars')
 const mongoose = require ('mongoose')
 const app = express()
 const path = require ("path")
+const session = require('express-session')
 const admin = require('./routes/admin')
-const session = require ('express-session')
+const usuario = require('./routes/usuarios')
 const flash = require ('connect-flash')
-const req = require('express/lib/request')
-const res = require('express/lib/response')
 require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
+//require('./models/Usuario')
+//const Usuario = mongoose.model('usuario')
+
 const Port = 3002
 
 
@@ -100,9 +102,12 @@ app.get('/404', (req,res) =>{
    res.end()
 })
 
-// referenciando a nossa página de rotas
+// referenciando as nossas página de rotas
 app.use('/admin', admin)
-//referenciando local de arquivos estáticos 
+app.use('/usuario', usuario)
+
+
+//referenciando local de arquivos estáticos
 app.use(express.static(path.join(__dirname,"public")))
 
 // express http server 
