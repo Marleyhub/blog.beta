@@ -29,27 +29,37 @@ router.post('/criar',(req,res)=>{
     }
     if(erros.length > 0){
         res.render('usuario/cadastro', {erros: erros})
-        console.log(erros)
+       
     }else{
-        const novoUsuario = {
-            Nome: req.body.nome,
-            Email: req.body.email,
-            Senha: req.body.senha
-        }
-        new Usuario(novoUsuario).save().then(()=>{
-            req.flash('succes_msg','Usuario criado com sucesso')
-            res.redirect('/usuario/cadastro')
-            console.log('foi')
-        }).catch((err)=>{
-            req.flash('error_msg', 'Houve um erro registrar novo usuario')
-            res.redirect('/usuario/cadastro')
-            console.log(err)
+
+        Usuario.findOne({email: req.body.email}).then((usuario)=>{
+            if(usuario){
+                req.flash('error_msg', 'Usuario já cadastrado')
+                res.redirect('/cadastro')
+            }else{
+                const novoUsuario = {
+                    Nome: req.body.nome,
+                    Email: req.body.email,
+                    Senha: req.body.senha
+                }
+                new Usuario(novoUsuario).save().then(()=>{
+                    req.flash('succes_msg','Usuario criado com sucesso')
+                    res.redirect('/usuario/cadastro')
+                    console.log('foi')
+                }).catch((err)=>{
+                    req.flash('error_msg', 'Houve um erro registrar novo usuario')
+                    res.redirect('/usuario/cadastro')
+                    console.log(err)
+                })
+             }
         })
+        
     }
 })
 
 router.get('/login', (req,res)=>{
     res.render('usuario/login')
 })
+
 
 module.exports = router
