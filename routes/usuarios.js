@@ -8,7 +8,7 @@ const Usuario = mongoose.model('usuario')
 router.get('/cadastro', (req,res)=>{
     res.render('usuario/cadastro')
 })
-
+//Criando usuario
 router.post('/criar',(req,res)=>{
     var erros = []
 
@@ -31,11 +31,11 @@ router.post('/criar',(req,res)=>{
         res.render('usuario/cadastro', {erros: erros})
        
     }else{
-
+        //Conferindo email no banco de dados 
         Usuario.findOne({email: req.body.email}).then((usuario)=>{
             if(usuario){
                 req.flash('error_msg', 'Usuario já cadastrado')
-                res.redirect('/cadastro')
+                res.redirect('/usuario/cadastro')
             }else{
                 const novoUsuario = {
                     Nome: req.body.nome,
@@ -49,7 +49,6 @@ router.post('/criar',(req,res)=>{
                 }).catch((err)=>{
                     req.flash('error_msg', 'Houve um erro registrar novo usuario')
                     res.redirect('/usuario/cadastro')
-                    console.log(err)
                 })
              }
         })
