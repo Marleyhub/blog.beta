@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuario')
 
+
 router.get('/cadastro', (req,res)=>{
     res.render('usuario/cadastro')
 })
@@ -45,6 +46,10 @@ router.post('/criar',(req,res)=>{
             console.log(err)
         })
     }
+})
+
+router.get('/login', (req,res)=>{
+    res.render('usuario/login')
 })
 
 module.exports = router
