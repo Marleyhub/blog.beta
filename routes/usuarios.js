@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs/dist/bcrypt')
 const express = require ('express')
 const router = express.Router()
 const mongoose = require('mongoose')
@@ -32,7 +33,7 @@ router.post('/criar',(req,res)=>{
        
     }else{
         //Conferindo email no banco de dados 
-        Usuario.findOne({email: req.body.email}).then((usuario)=>{
+        Usuario.findOne({Email: req.body.email}).then((usuario)=>{
             if(usuario){
                 req.flash('error_msg', 'Usuario já cadastrado')
                 res.redirect('/usuario/cadastro')
@@ -43,16 +44,30 @@ router.post('/criar',(req,res)=>{
                     Email: req.body.email,
                     Senha: req.body.senha
                 })
-                new Usuario(novoUsuario).save().then(()=>{
-                    req.flash('succes_msg','Usuario criado com sucesso')
-                    res.redirect('/usuario/cadastro')
-                    console.log('foi')
-                }).catch((err)=>{
-                    req.flash('error_msg', 'Houve um erro registrar novo usuario')
-                    res.redirect('/usuario/cadastro')
-                    console.log(err)
+                bcrypt.genSalt(10,(erro,salt)=>{
+                    bcrypt.hash(novoUsuario.Senha, salt, (erro,hash) =>{
+                        if(erro){
+                        req.flash("error_msg", 'houve um erro interno no cadastro da senha')
+                        res.redirect('/')
+                        console.log('erro no hash')
+                    }
+                    novoUsuario.Senha = hash
+                    novoUsuario.save().then(()=>{
+                        req.flash('success_msg','Usuario criado com sucesso')
+                        res.redirect('/')
+                        console.log('foi')
+                    }).catch((err)=>{
+                        req.flash('error_msg', 'Houve um erro registrar novo usuario')
+                        res.send('/')
+                        console.log(err)
+                        console.log('erro no salvamento')
+                    })
+
+                    })
                 })
+               
              }
+        
         })
         
     }

@@ -11,8 +11,7 @@ require('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
-//require('./models/Usuario')
-//const Usuario = mongoose.model('usuario')
+const passport = require('passport')
 
 const Port = 3002
 
