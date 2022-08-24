@@ -36,12 +36,13 @@ router.post('/criar',(req,res)=>{
             if(usuario){
                 req.flash('error_msg', 'Usuario já cadastrado')
                 res.redirect('/usuario/cadastro')
+                console.log(usuario)
             }else{
-                const novoUsuario = {
+                const novoUsuario = new Usuario({
                     Nome: req.body.nome,
                     Email: req.body.email,
                     Senha: req.body.senha
-                }
+                })
                 new Usuario(novoUsuario).save().then(()=>{
                     req.flash('succes_msg','Usuario criado com sucesso')
                     res.redirect('/usuario/cadastro')
@@ -49,6 +50,7 @@ router.post('/criar',(req,res)=>{
                 }).catch((err)=>{
                     req.flash('error_msg', 'Houve um erro registrar novo usuario')
                     res.redirect('/usuario/cadastro')
+                    console.log(err)
                 })
              }
         })
