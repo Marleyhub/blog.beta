@@ -12,6 +12,7 @@ const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
 const passport = require('passport')
+require('./config/auth')(passport)
 
 const Port = 3002
 
@@ -36,13 +37,17 @@ app.use(session({
    resave: true,
    saveUninitialized: true
 }))   
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 //flash (apresenta aplicações temporarias)
 app.use(flash())
 // ultilizando variaveis globais em uma middleware
 app.use((req,res,next)=>{
-   res.locals.sucess_msg = req.flash('success_msg')
+   res.locals.success_msg = req.flash('success_msg')
    res.locals.error_msg = req.flash('error_msg')
-   next()
+   res.locals.error = req.flash('error')
+   next()   
 })
 // rotas config   
 app.get ('/', (req,res)=>{

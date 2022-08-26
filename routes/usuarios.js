@@ -4,6 +4,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Usuario')
 const Usuario = mongoose.model('usuario')
+const passport = require('passport')
 
 
 router.get('/cadastro', (req,res)=>{
@@ -52,6 +53,7 @@ router.post('/criar',(req,res)=>{
                         console.log('erro no hash')
                     }
                     novoUsuario.Senha = hash
+                    
                     novoUsuario.save().then(()=>{
                         req.flash('success_msg','Usuario criado com sucesso')
                         res.redirect('/')
@@ -73,8 +75,17 @@ router.post('/criar',(req,res)=>{
     }
 })
 
-router.get('/login', (req,res)=>{
-    res.render('usuario/login')
+router.get('/log', (req,res)=>{
+ res.render('usuario/log')
+})
+
+router.post('/login', (req,res,next)=>{
+    passport.authenticate("local",  {
+        successRedirect: "/",
+        failureRedirect: "/usuario/log",
+        failureFlash: true
+    })(req,res,next)
+    
 })
 
 
