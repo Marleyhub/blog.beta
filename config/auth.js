@@ -14,11 +14,11 @@ module.exports = function(passport){
             if(!usuario){
                 return done(null, false,{message: 'Usuario ou senha incorretos'})
             }
-            bcrypt.compare(senha, usuario.senha, (erro, batem)=>{
-                if(batem){
-                    return done(null, usuario)
-                }else{
+            bcrypt.compare(senha, usuario.Senha, (erro, batem)=>{
+                if(erro){
                     return done(null,false,{message: 'Senha incorreta'})
+                }else{
+                    return done(null, usuario)
                 }
             })
         })
@@ -29,7 +29,7 @@ passport.serializeUser((usuario, done)=>{
 })
 
 passport.deserializeUser((id, done)=>{
-    usuario.findById(id,(err, usuario)=>{
+    Usuario.findById(id,(err, usuario)=>{
         done(err, usuario)
     })
 })
